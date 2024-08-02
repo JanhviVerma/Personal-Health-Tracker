@@ -21,11 +21,26 @@ header {
     margin-bottom: 2rem;
 }
 
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 1rem;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
 h1, h2 {
     margin-bottom: 1rem;
 }
 
-#data-entry, #data-display {
+#data-entry, #data-display, #data-visualization {
     background-color: #f4f4f4;
     padding: 2rem;
     margin-bottom: 2rem;
@@ -87,9 +102,21 @@ tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 
+.chart-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 2rem auto;
+}
+
 footer {
     text-align: center;
     margin-top: 2rem;
     padding: 1rem;
     background-color: #f4f4f4;
+}
+
+@media (max-width: 768px) {
+    form {
+        grid-template-columns: 1fr;
+    }
 }
