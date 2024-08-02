@@ -4,17 +4,26 @@
     padding: 0;
 }
 
+:root {
+    --primary-color: #4CAF50;
+    --secondary-color: #45a049;
+    --background-color: #f4f4f4;
+    --text-color: #333;
+    --shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
-    color: #333;
+    color: var(--text-color);
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
+    background-color: #e9e9e9;
 }
 
 header {
-    background-color: #4CAF50;
+    background-color: var(--primary-color);
     color: white;
     text-align: center;
     padding: 1rem;
@@ -22,6 +31,8 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-radius: 5px;
+    box-shadow: var(--shadow);
 }
 
 nav ul {
@@ -37,6 +48,13 @@ nav ul li {
 nav ul li a {
     color: white;
     text-decoration: none;
+    padding: 0.5rem;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
+}
+
+nav ul li a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 h1, h2, h3 {
@@ -44,10 +62,11 @@ h1, h2, h3 {
 }
 
 section {
-    background-color: #f4f4f4;
+    background-color: white;
     padding: 2rem;
     margin-bottom: 2rem;
     border-radius: 5px;
+    box-shadow: var(--shadow);
 }
 
 form {
@@ -65,45 +84,54 @@ label {
     font-weight: bold;
 }
 
-input {
+input, select, textarea {
     padding: 0.5rem;
     border: 1px solid #ddd;
     border-radius: 3px;
+    font-size: 1rem;
+}
+
+input[type="range"] {
+    width: 100%;
 }
 
 button {
-    background-color: #4CAF50;
+    background-color: var(--primary-color);
     color: white;
     padding: 0.5rem 1rem;
     border: none;
     cursor: pointer;
     font-size: 1rem;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: var(--secondary-color);
 }
 
 .chart-container {
     width: 100%;
-    max-width: 600px;
+    max-width: 800px;
     margin: 2rem auto;
+    background-color: white;
+    padding: 1rem;
+    border-radius: 5px;
+    box-shadow: var(--shadow);
 }
 
-#correlations, #trends, #predictions {
-    background-color: #fff;
+#chart-controls {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+#correlations, #trends, #predictions, #summary, #recent-entries, #goal-progress {
+    background-color: white;
     padding: 1rem;
     margin-bottom: 1rem;
     border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-#summary, #recent-entries {
-    background-color: #fff;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow);
 }
 
 #user-info {
@@ -123,7 +151,8 @@ footer {
     text-align: center;
     margin-top: 2rem;
     padding: 1rem;
-    background-color: #f4f4f4;
+    background-color: var(--background-color);
+    border-radius: 5px;
 }
 
 .hidden {
@@ -148,4 +177,31 @@ footer {
     form {
         grid-template-columns: 1fr;
     }
+
+    #chart-controls {
+        flex-direction: column;
+    }
+}
+
+#stress, #mood {
+    width: 100%;
+}
+
+#stress-output, #mood-output {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+#notifications, #data-management {
+    margin-top: 2rem;
+}
+
+#backup-data, #restore-data {
+    margin-top: 1rem;
+}
+
+progress {
+    width: 100%;
+    height: 20px;
+    margin-bottom: 1rem;
 }

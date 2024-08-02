@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Health Tracker</title>
+    <title>Personal Health Tracker v5</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -12,7 +12,7 @@
 </head>
 <body>
     <header>
-        <h1>Personal Health Tracker</h1>
+        <h1>Personal Health Tracker v5</h1>
         <nav>
             <ul>
                 <li><a href="#dashboard">Dashboard</a></li>
@@ -47,6 +47,7 @@
             <h2>Dashboard</h2>
             <div id="summary"></div>
             <div id="recent-entries"></div>
+            <div id="goal-progress"></div>
         </section>
         <section id="data-entry" class="hidden">
             <h2>Enter Your Health Data</h2>
@@ -73,27 +74,39 @@
                 </div>
                 <div class="form-group">
                     <label for="mood">Mood (1-10):</label>
-                    <input type="number" id="mood" min="1" max="10" required>
+                    <input type="range" id="mood" min="1" max="10" required>
+                    <output for="mood" id="mood-output"></output>
+                </div>
+                <div class="form-group">
+                    <label for="stress">Stress Level (1-10):</label>
+                    <input type="range" id="stress" min="1" max="10" required>
+                    <output for="stress" id="stress-output"></output>
+                </div>
+                <div class="form-group">
+                    <label for="notes">Notes:</label>
+                    <textarea id="notes" rows="3"></textarea>
                 </div>
                 <button type="submit">Save Data</button>
             </form>
         </section>
         <section id="data-visualization" class="hidden">
             <h2>Data Visualization</h2>
-            <div class="chart-container">
-                <canvas id="weightChart"></canvas>
+            <div id="chart-controls">
+                <label for="chart-type">Chart Type:</label>
+                <select id="chart-type">
+                    <option value="line">Line</option>
+                    <option value="bar">Bar</option>
+                </select>
+                <label for="time-range">Time Range:</label>
+                <select id="time-range">
+                    <option value="7">Last 7 days</option>
+                    <option value="30">Last 30 days</option>
+                    <option value="90">Last 90 days</option>
+                    <option value="all">All time</option>
+                </select>
             </div>
             <div class="chart-container">
-                <canvas id="stepsChart"></canvas>
-            </div>
-            <div class="chart-container">
-                <canvas id="waterChart"></canvas>
-            </div>
-            <div class="chart-container">
-                <canvas id="sleepChart"></canvas>
-            </div>
-            <div class="chart-container">
-                <canvas id="moodChart"></canvas>
+                <canvas id="healthChart"></canvas>
             </div>
         </section>
         <section id="analytics" class="hidden">
@@ -124,16 +137,29 @@
                 </div>
                 <button type="submit">Set Goals</button>
             </form>
+            <div id="notifications">
+                <h3>Notification Settings</h3>
+                <div class="form-group">
+                    <label for="enable-notifications">Enable Notifications:</label>
+                    <input type="checkbox" id="enable-notifications">
+                </div>
+                <div class="form-group">
+                    <label for="notification-time">Daily Reminder Time:</label>
+                    <input type="time" id="notification-time">
+                </div>
+            </div>
             <div id="data-management">
                 <h3>Data Management</h3>
                 <button id="export-data">Export Data</button>
                 <button id="import-data">Import Data</button>
                 <input type="file" id="import-file" accept=".json" style="display: none;">
+                <button id="backup-data">Backup Data to Cloud</button>
+                <button id="restore-data">Restore Data from Cloud</button>
             </div>
         </section>
     </main>
     <footer>
-        <p>&copy; 2024 Personal Health Tracker</p>
+        <p>&copy; 2024 Personal Health Tracker v5</p>
     </footer>
     <script src="script.js"></script>
 </body>
