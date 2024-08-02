@@ -230,3 +230,34 @@ progress {
 .dark-theme button:hover {
     background-color: var(--secondary-color);
 }
+
+#multi-metric-chart-container {
+    margin-top: 2rem;
+}
+
+#advanced-trends, #health-recommendations {
+    background-color: white;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+    box-shadow: var(--shadow);
+}
+
+.recommendation {
+    border-left: 4px solid var(--primary-color);
+    padding-left: 1rem;
+    margin-bottom: 1rem;
+}
+
+.trend-arrow {
+    font-size: 1.2em;
+    margin-left: 0.5rem;
+}
+
+.trend-up {
+    color: green;
+}
+
+.trend-down {
+    color: red;
+}
