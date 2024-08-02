@@ -19,15 +19,18 @@ header {
     text-align: center;
     padding: 1rem;
     margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 nav ul {
     list-style-type: none;
     padding: 0;
+    display: flex;
 }
 
 nav ul li {
-    display: inline;
     margin-right: 1rem;
 }
 
@@ -36,7 +39,7 @@ nav ul li a {
     text-decoration: none;
 }
 
-h1, h2 {
+h1, h2, h3 {
     margin-bottom: 1rem;
 }
 
@@ -81,57 +84,39 @@ button:hover {
     background-color: #45a049;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1rem;
-}
-
-th, td {
-    border: 1px solid #ddd;
-    padding: 0.5rem;
-    text-align: left;
-}
-
-th {
-    background-color: #4CAF50;
-    color: white;
-}
-
-tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
 .chart-container {
     width: 100%;
     max-width: 600px;
     margin: 2rem auto;
 }
 
-#progress-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-}
-
-.progress-item {
+#correlations, #trends, #predictions {
     background-color: #fff;
     padding: 1rem;
+    margin-bottom: 1rem;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.progress-bar {
-    height: 20px;
-    background-color: #e0e0e0;
-    border-radius: 10px;
-    overflow: hidden;
+#summary, #recent-entries {
+    background-color: #fff;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.progress-bar-fill {
-    height: 100%;
-    background-color: #4CAF50;
-    transition: width 0.5s ease-in-out;
+#user-info {
+    display: flex;
+    align-items: center;
+}
+
+#user-email {
+    margin-right: 1rem;
+}
+
+#data-management {
+    margin-top: 2rem;
 }
 
 footer {
@@ -141,7 +126,25 @@ footer {
     background-color: #f4f4f4;
 }
 
+.hidden {
+    display: none;
+}
+
 @media (max-width: 768px) {
+    header {
+        flex-direction: column;
+    }
+
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    nav ul li {
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+    }
+
     form {
         grid-template-columns: 1fr;
     }
