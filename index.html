@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Health Tracker v5</title>
+    <title>Personal Health Tracker v6</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -12,13 +12,14 @@
 </head>
 <body>
     <header>
-        <h1>Personal Health Tracker v5</h1>
+        <h1>Personal Health Tracker v6</h1>
         <nav>
             <ul>
                 <li><a href="#dashboard">Dashboard</a></li>
                 <li><a href="#data-entry">Enter Data</a></li>
                 <li><a href="#data-visualization">Visualize Data</a></li>
                 <li><a href="#analytics">Analytics</a></li>
+                <li><a href="#goals">Goals</a></li>
                 <li><a href="#settings">Settings</a></li>
             </ul>
         </nav>
@@ -48,6 +49,7 @@
             <div id="summary"></div>
             <div id="recent-entries"></div>
             <div id="goal-progress"></div>
+            <div id="health-score"></div>
         </section>
         <section id="data-entry" class="hidden">
             <h2>Enter Your Health Data</h2>
@@ -104,6 +106,15 @@
                     <option value="90">Last 90 days</option>
                     <option value="all">All time</option>
                 </select>
+                <label for="data-type">Data Type:</label>
+                <select id="data-type">
+                    <option value="weight">Weight</option>
+                    <option value="steps">Steps</option>
+                    <option value="water">Water Intake</option>
+                    <option value="sleep">Sleep Duration</option>
+                    <option value="mood">Mood</option>
+                    <option value="stress">Stress Level</option>
+                </select>
             </div>
             <div class="chart-container">
                 <canvas id="healthChart"></canvas>
@@ -114,11 +125,11 @@
             <div id="correlations"></div>
             <div id="trends"></div>
             <div id="predictions"></div>
+            <div id="insights"></div>
         </section>
-        <section id="settings" class="hidden">
-            <h2>Settings</h2>
+        <section id="goals" class="hidden">
+            <h2>Health Goals</h2>
             <form id="goal-form">
-                <h3>Set Your Health Goals</h3>
                 <div class="form-group">
                     <label for="weight-goal">Weight Goal (kg):</label>
                     <input type="number" id="weight-goal" step="0.1" min="0" max="500">
@@ -137,6 +148,10 @@
                 </div>
                 <button type="submit">Set Goals</button>
             </form>
+            <div id="goal-progress-details"></div>
+        </section>
+        <section id="settings" class="hidden">
+            <h2>Settings</h2>
             <div id="notifications">
                 <h3>Notification Settings</h3>
                 <div class="form-group">
@@ -155,11 +170,22 @@
                 <input type="file" id="import-file" accept=".json" style="display: none;">
                 <button id="backup-data">Backup Data to Cloud</button>
                 <button id="restore-data">Restore Data from Cloud</button>
+                <button id="delete-account">Delete Account</button>
+            </div>
+            <div id="appearance">
+                <h3>Appearance</h3>
+                <div class="form-group">
+                    <label for="theme">Theme:</label>
+                    <select id="theme">
+                        <option value="light">Light</option>
+                        <option value="dark">Dark</option>
+                    </select>
+                </div>
             </div>
         </section>
     </main>
     <footer>
-        <p>&copy; 2024 Personal Health Tracker v5</p>
+        <p>&copy; 2024 Personal Health Tracker v6</p>
     </footer>
     <script src="script.js"></script>
 </body>

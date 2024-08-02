@@ -1,9 +1,3 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
 :root {
     --primary-color: #4CAF50;
     --secondary-color: #45a049;
@@ -39,10 +33,12 @@ nav ul {
     list-style-type: none;
     padding: 0;
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 nav ul li {
-    margin-right: 1rem;
+    margin: 0 0.5rem;
 }
 
 nav ul li a {
@@ -122,11 +118,16 @@ button:hover {
 
 #chart-controls {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     margin-bottom: 1rem;
 }
 
-#correlations, #trends, #predictions, #summary, #recent-entries, #goal-progress {
+#chart-controls label, #chart-controls select {
+    margin-bottom: 0.5rem;
+}
+
+#correlations, #trends, #predictions, #insights, #summary, #recent-entries, #goal-progress, #health-score {
     background-color: white;
     padding: 1rem;
     margin-bottom: 1rem;
@@ -143,7 +144,7 @@ button:hover {
     margin-right: 1rem;
 }
 
-#data-management {
+#data-management, #notifications, #appearance {
     margin-top: 2rem;
 }
 
@@ -170,8 +171,7 @@ footer {
     }
 
     nav ul li {
-        margin-right: 0;
-        margin-bottom: 0.5rem;
+        margin: 0.5rem 0;
     }
 
     form {
@@ -192,11 +192,7 @@ footer {
     margin-left: 10px;
 }
 
-#notifications, #data-management {
-    margin-top: 2rem;
-}
-
-#backup-data, #restore-data {
+#backup-data, #restore-data, #delete-account {
     margin-top: 1rem;
 }
 
@@ -204,4 +200,33 @@ progress {
     width: 100%;
     height: 20px;
     margin-bottom: 1rem;
+}
+
+.dark-theme {
+    --primary-color: #2c3e50;
+    --secondary-color: #34495e;
+    --background-color: #1a1a1a;
+    --text-color: #f4f4f4;
+}
+
+.dark-theme body {
+    background-color: #121212;
+}
+
+.dark-theme section, .dark-theme .chart-container {
+    background-color: #1e1e1e;
+}
+
+.dark-theme input, .dark-theme select, .dark-theme textarea {
+    background-color: #2a2a2a;
+    color: var(--text-color);
+    border-color: #3a3a3a;
+}
+
+.dark-theme button {
+    background-color: var(--primary-color);
+}
+
+.dark-theme button:hover {
+    background-color: var(--secondary-color);
 }
