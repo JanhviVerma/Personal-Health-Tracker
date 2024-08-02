@@ -1,7 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
     const healthForm = document.getElementById('health-form');
+    const goalForm = document.getElementById('goal-form');
     const healthData = document.getElementById('health-data');
+    const exportDataBtn = document.getElementById('export-data');
+    const progressContainer = document.getElementById('progress-container');
     let healthRecords = JSON.parse(localStorage.getItem('healthRecords')) || [];
+    let healthGoals = JSON.parse(localStorage.getItem('healthGoals')) || {};
 
     function displayHealthData() {
         const tbody = healthData.querySelector('tbody');
@@ -22,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
             tbody.appendChild(row);
         });
         updateCharts();
+        updateProgressTracking();
     }
 
     function saveHealthData(event) {
@@ -37,6 +42,18 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('healthRecords', JSON.stringify(healthRecords));
         displayHealthData();
         healthForm.reset();
+    }
+
+    function saveHealthGoals(event) {
+        event.preventDefault();
+        healthGoals = {
+            weight: parseFloat(document.getElementById('weight-goal').value),
+            steps: parseInt(document.getElementById('steps-goal').value),
+            water: parseInt(document.getElementById('water-goal').value),
+            sleep: parseFloat(document.getElementById('sleep-goal').value)
+        };
+        localStorage.setItem('healthGoals', JSON.stringify(healthGoals));
+        updateProgressTracking();
     }
 
     window.editRecord = (index) => {
@@ -106,6 +123,56 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function updateProgressTracking() {
+        progressContainer.innerHTML = '';
+        if (Object.keys(healthGoals).length === 0) {
+            progressContainer.innerHTML = '<p>No goals set. Please set your health goals.</p>';
+            return;
+        }
+
+        const latestRecord = healthRecords[healthRecords.length - 1];
+        if (!latestRecord) {
+            progressContainer.innerHTML = '<p>No data available. Please enter your health data.</p>';
+            return;
+        }
+
+        for (const [key, goal] of Object.entries(healthGoals)) {
+            const progress = (latestRecord[key] / goal) * 100;
+            const progressItem = document.createElement('div');
+            progressItem.classList.add('progress-item');
+            progressItem.innerHTML = `
+                <h3>${key.charAt(0).toUpperCase() + key.slice(1)}</h3>
+                <p>Goal: ${goal}</p>
+                <p>Current: ${latestRecord[key]}</p>
+                <div class="progress-bar">
+                    <div class="progress-bar-fill" style="width: ${Math.min(progress, 100)}%"></div>
+                </div>
+                <p>${progress.toFixed(2)}% of goal</p>
+            `;
+            progressContainer.appendChild(progressItem);
+        }
+    }
+
+    function exportData() {
+        const csvContent = "data:text/csv;charset=utf-8," 
+            + "Date,Weight,Steps,Water,Sleep\n"
+            + healthRecords.map(record => 
+                `${record.date},${record.weight},${record.steps},${record.water},${record.sleep}`
+            ).join("\n");
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "health_data.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
     healthForm.addEventListener('submit', saveHealthData);
+    goalForm.addEventListener('submit', saveHealthGoals);
+    exportDataBtn.addEventListener('click', exportData);
+
     displayHealthData();
+    updateProgressTracking();
 });

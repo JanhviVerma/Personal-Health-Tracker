@@ -15,6 +15,7 @@
                 <li><a href="#data-entry">Enter Data</a></li>
                 <li><a href="#data-display">View Data</a></li>
                 <li><a href="#data-visualization">Visualize Data</a></li>
+                <li><a href="#goal-setting">Set Goals</a></li>
             </ul>
         </nav>
     </header>
@@ -47,6 +48,7 @@
         </section>
         <section id="data-display">
             <h2>Your Health Data</h2>
+            <button id="export-data">Export Data</button>
             <table id="health-data">
                 <thead>
                     <tr>
@@ -71,6 +73,32 @@
             <div class="chart-container">
                 <canvas id="stepsChart"></canvas>
             </div>
+        </section>
+        <section id="goal-setting">
+            <h2>Set Your Health Goals</h2>
+            <form id="goal-form">
+                <div class="form-group">
+                    <label for="weight-goal">Weight Goal (kg):</label>
+                    <input type="number" id="weight-goal" step="0.1" min="0" max="500">
+                </div>
+                <div class="form-group">
+                    <label for="steps-goal">Daily Steps Goal:</label>
+                    <input type="number" id="steps-goal" min="0" max="100000">
+                </div>
+                <div class="form-group">
+                    <label for="water-goal">Daily Water Intake Goal (ml):</label>
+                    <input type="number" id="water-goal" min="0" max="10000">
+                </div>
+                <div class="form-group">
+                    <label for="sleep-goal">Daily Sleep Goal (hours):</label>
+                    <input type="number" id="sleep-goal" step="0.5" min="0" max="24">
+                </div>
+                <button type="submit">Set Goals</button>
+            </form>
+        </section>
+        <section id="progress-tracking">
+            <h2>Progress Tracking</h2>
+            <div id="progress-container"></div>
         </section>
     </main>
     <footer>
