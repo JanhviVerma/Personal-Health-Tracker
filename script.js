@@ -86,6 +86,9 @@ function loadUserData() {
         document.getElementById('wearable-sync').classList.remove('hidden');
         document.getElementById('social-features').classList.remove('hidden');
         document.getElementById('advanced-analytics').classList.remove('hidden');
+        document.getElementById('food-tracking').classList.remove('hidden');
+        document.getElementById('mental-health').classList.remove('hidden');
+        document.getElementById('ai-insights').classList.remove('hidden');
 }
 
 function saveUserData() {
@@ -170,6 +173,11 @@ function updateDashboard() {
 
     updateLeaderboard();
     updateAdvancedAnalytics();
+    updateNutritionSummary();
+    updateMealHistory();
+    updateMoodHistory();
+    updateMentalHealthInsights();
+    updateAIInsights();
 }
 
 function calculateHealthScore(record) {
@@ -579,6 +587,223 @@ function calculateTrend(data) {
     const slope = (n * sum_xy - sum_x * sum_y) / (n * sum_xx - sum_x * sum_x);
     return slope;
 }
+
+// Food Tracking System
+const foodSearchInput = document.getElementById('food-search');
+const foodSuggestions = document.getElementById('food-suggestions');
+const foodEntryForm = document.getElementById('food-entry-form');
+const dailyNutritionSummary = document.getElementById('daily-nutrition-summary');
+const mealHistory = document.getElementById('meal-history');
+
+// Simulated food database
+const foodDatabase = [
+    { name: 'Apple', calories: 95, protein: 0.5, carbs: 25, fat: 0.3 },
+    { name: 'Chicken Breast', calories: 165, protein: 31, carbs: 0, fat: 3.6 },
+    { name: 'Brown Rice', calories: 216, protein: 5, carbs: 45, fat: 1.6 },
+    // Add more foods...
+];
+
+foodSearchInput.addEventListener('input', () => {
+    const searchTerm = foodSearchInput.value.toLowerCase();
+    const suggestions = foodDatabase.filter(food => 
+        food.name.toLowerCase().includes(searchTerm)
+    );
+    
+    foodSuggestions.innerHTML = '';
+    suggestions.forEach(food => {
+        const div = document.createElement('div');
+        div.textContent = food.name;
+        div.addEventListener('click', () => {
+            foodSearchInput.value = food.name;
+            foodSuggestions.innerHTML = '';
+        });
+        foodSuggestions.appendChild(div);
+    });
+});
+
+foodEntryForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const foodName = foodSearchInput.value;
+    const quantity = parseFloat(document.getElementById('food-quantity').value);
+    const food = foodDatabase.find(f => f.name.toLowerCase() === foodName.toLowerCase());
+    
+    if (food && quantity) {
+        const mealEntry = {
+            name: food.name,
+            quantity: quantity,
+            calories: food.calories * (quantity / 100),
+            protein: food.protein * (quantity / 100),
+            carbs: food.carbs * (quantity / 100),
+            fat: food.fat * (quantity / 100)
+        };
+        
+        // Add to user's meal history
+        const latestRecord = healthRecords[healthRecords.length - 1];
+        if (!latestRecord.meals) latestRecord.meals = [];
+        latestRecord.meals.push(mealEntry);
+        
+        updateNutritionSummary();
+        updateMealHistory();
+        saveUserData();
+        
+        foodEntryForm.reset();
+    }
+});
+
+function updateNutritionSummary() {
+    const latestRecord = healthRecords[healthRecords.length - 1];
+    const meals = latestRecord.meals || [];
+    
+    const totalNutrition = meals.reduce((total, meal) => {
+        total.calories += meal.calories;
+        total.protein += meal.protein;
+        total.carbs += meal.carbs;
+        total.fat += meal.fat;
+        return total;
+    }, { calories: 0, protein: 0, carbs: 0, fat: 0 });
+    
+    dailyNutritionSummary.innerHTML = `
+        <h3>Daily Nutrition Summary</h3>
+        <p>Calories: ${totalNutrition.calories.toFixed(1)}</p>
+        <p>Protein: ${totalNutrition.protein.toFixed(1)}g</p>
+        <p>Carbs: ${totalNutrition.carbs.toFixed(1)}g</p>
+        <p>Fat: ${totalNutrition.fat.toFixed(1)}g</p>
+    `;
+}
+
+function updateMealHistory() {
+    const latestRecord = healthRecords[healthRecords.length - 1];
+    const meals = latestRecord.meals || [];
+    
+    mealHistory.innerHTML = '<h3>Today\'s Meals</h3>';
+    meals.forEach(meal => {
+        mealHistory.innerHTML += `
+            <p>${meal.name} (${meal.quantity}g): ${meal.calories.toFixed(1)} cal</p>
+        `;
+    });
+}
+
+// Mental Health Tracking
+const moodEntryForm = document.getElementById('mood-entry-form');
+const moodHistory = document.getElementById('mood-history');
+const mentalHealthInsights = document.getElementById('mental-health-insights');
+
+moodEntryForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const moodScore = parseInt(document.getElementById('mood-score').value);
+    const moodNotes = document.getElementById('mood-notes').value;
+    
+    const latestRecord = healthRecords[healthRecords.length - 1];
+    latestRecord.moodScore = moodScore;
+    latestRecord.moodNotes = moodNotes;
+    
+    updateMoodHistory();
+    updateMentalHealthInsights();
+    saveUserData();
+    
+    moodEntryForm.reset();
+});
+
+function updateMoodHistory() {
+    const moodEntries = healthRecords.slice(-7).map(record => ({
+        date: record.date,
+        score: record.moodScore
+    })).filter(entry => entry.score);
+    
+    moodHistory.innerHTML = '<h3>Mood History (Last 7 Days)</h3>';
+    moodEntries.forEach(entry => {
+        moodHistory.innerHTML += `
+            <p>${entry.date}: Mood ${entry.score}/10</p>
+        `;
+    });
+}
+
+function updateMentalHealthInsights() {
+    const moodScores = healthRecords.slice(-30).map(record => record.moodScore).filter(Boolean);
+    const avgMood = moodScores.reduce((sum, score) => sum + score, 0) / moodScores.length;
+    
+    mentalHealthInsights.innerHTML = `
+        <h3>Mental Health Insights</h3>
+        <p>Your average mood over the last 30 days: ${avgMood.toFixed(1)}/10</p>
+    `;
+    
+    if (avgMood < 5) {
+        mentalHealthInsights.innerHTML += `
+            <p>Your mood has been lower than average. Consider talking to a mental health professional.</p>
+        `;
+    } else if (avgMood > 7) {
+        mentalHealthInsights.innerHTML += `
+            <p>Great job! Your mood has been consistently positive.</p>
+        `;
+    }
+}
+
+// AI-Driven Insights
+const healthPredictions = document.getElementById('health-predictions');
+const personalizedPlan = document.getElementById('personalized-plan');
+const anomalyDetection = document.getElementById('anomaly-detection');
+
+function updateAIInsights() {
+    // Simulated AI predictions
+    const weightPrediction = predictWeight(healthRecords);
+    const stepsPrediction = predictSteps(healthRecords);
+    
+    healthPredictions.innerHTML = `
+        <h3>Health Predictions</h3>
+        <p>Predicted weight next week: ${weightPrediction.toFixed(1)} kg</p>
+        <p>Predicted average steps next week: ${stepsPrediction.toFixed(0)}</p>
+    `;
+    
+    // Simulated personalized plan
+    personalizedPlan.innerHTML = `
+        <h3>Your Personalized Health Plan</h3>
+        <ul>
+            <li>Aim for ${(stepsPrediction * 1.1).toFixed(0)} steps per day</li>
+            <li>Try to reduce your calorie intake by 100 calories per day</li>
+            <li>Include 30 minutes of meditation in your daily routine</li>
+        </ul>
+    `;
+    
+    // Simulated anomaly detection
+    const latestRecord = healthRecords[healthRecords.length - 1];
+    const avgSteps = healthRecords.slice(-7).reduce((sum, record) => sum + record.steps, 0) / 7;
+    
+    anomalyDetection.innerHTML = '<h3>Health Anomalies</h3>';
+    if (latestRecord.steps < avgSteps * 0.5) {
+        anomalyDetection.innerHTML += `
+            <p class="anomaly">Your step count today (${latestRecord.steps}) is significantly lower than your 7-day average (${avgSteps.toFixed(0)}). Are you feeling okay?</p>
+        `;
+    }
+    if (latestRecord.weight > healthRecords[healthRecords.length - 2].weight * 1.02) {
+        anomalyDetection.innerHTML += `
+            <p class="anomaly">Your weight has increased by more than 2% since yesterday. This could be due to water retention or other factors.</p>
+        `;
+    }
+}
+
+function predictWeight(records) {
+    // Simple linear regression for weight prediction
+    const x = records.map((_, i) => i);
+    const y = records.map(record => record.weight);
+    const n = x.length;
+    
+    const sum_x = x.reduce((a, b) => a + b);
+    const sum_y = y.reduce((a, b) => a + b);
+    const sum_xy = x.reduce((sum, xi, i) => sum + xi * y[i], 0);
+    const sum_xx = x.reduce((sum, xi) => sum + xi * xi, 0);
+    
+    const slope = (n * sum_xy - sum_x * sum_y) / (n * sum_xx - sum_x * sum_x);
+    const intercept = (sum_y - slope * sum_x) / n;
+    
+    return slope * (n + 7) + intercept; // Predict weight 7 days from now
+}
+
+function predictSteps(records) {
+    // Simple moving average for steps prediction
+    const recentSteps = records.slice(-7).map(record => record.steps);
+    return recentSteps.reduce((a, b) => a + b) / recentSteps.length;
+}
+
 
 
 

@@ -332,3 +332,59 @@ progress {
     height: 300px;
     margin-top: 1rem;
 }
+
+#food-tracking, #mental-health, #ai-insights {
+    background-color: white;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border-radius: 5px;
+    box-shadow: var(--shadow);
+}
+
+#food-suggestions {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 5px;
+}
+
+#food-suggestions div {
+    padding: 5px;
+    cursor: pointer;
+}
+
+#food-suggestions div:hover {
+    background-color: #f0f0f0;
+}
+
+#daily-nutrition-summary, #meal-history {
+    margin-top: 1rem;
+}
+
+#mood-score {
+    width: 100%;
+}
+
+#mood-history {
+    margin-top: 1rem;
+}
+
+#mental-health-insights, #health-predictions, #personalized-plan, #anomaly-detection {
+    background-color: #f9f9f9;
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: 5px;
+}
+
+.insight-card {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.insight-card h4 {
+    margin-top: 0;
+}

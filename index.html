@@ -21,12 +21,16 @@
                 <li><a href="#analytics">Analytics</a></li>
                 <li><a href="#goals">Goals</a></li>
                 <li><a href="#settings">Settings</a></li>
+                <li><a href="#food-tracking">Food Tracking</a></li>
+                <li><a href="#mental-health">Mental Health</a></li>
+                <li><a href="#ai-insights">AI Insights</a></li>
             </ul>
         </nav>
         <div id="user-info">
             <span id="user-email"></span>
             <button id="logout-btn">Logout</button>
         </div>
+        
     </header>
     <main>
         <section id="auth" class="hidden">
@@ -205,6 +209,36 @@
             <div id="health-score-breakdown"></div>
             <div id="long-term-trends"></div>
             <div id="personalized-recommendations"></div>
+        </section>
+        <section id="food-tracking" class="hidden">
+            <h2>Food Tracking</h2>
+            <form id="food-entry-form">
+                <input type="text" id="food-search" placeholder="Search for a food...">
+                <div id="food-suggestions"></div>
+                <input type="number" id="food-quantity" placeholder="Quantity (g or ml)">
+                <button type="submit">Add Food</button>
+            </form>
+            <div id="daily-nutrition-summary"></div>
+            <div id="meal-history"></div>
+        </section>
+        
+        <section id="mental-health" class="hidden">
+            <h2>Mental Health Tracker</h2>
+            <form id="mood-entry-form">
+                <label for="mood-score">How do you feel today? (1-10)</label>
+                <input type="range" id="mood-score" min="1" max="10">
+                <textarea id="mood-notes" placeholder="Any thoughts or feelings you want to note?"></textarea>
+                <button type="submit">Save Mood Entry</button>
+            </form>
+            <div id="mood-history"></div>
+            <div id="mental-health-insights"></div>
+        </section>
+        
+        <section id="ai-insights" class="hidden">
+            <h2>AI-Driven Insights</h2>
+            <div id="health-predictions"></div>
+            <div id="personalized-plan"></div>
+            <div id="anomaly-detection"></div>
         </section>
     </main>
     <footer>
