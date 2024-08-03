@@ -83,6 +83,9 @@ function loadUserData() {
             }
         })
         .catch((error) => console.error("Error loading user data:", error));
+        document.getElementById('wearable-sync').classList.remove('hidden');
+        document.getElementById('social-features').classList.remove('hidden');
+        document.getElementById('advanced-analytics').classList.remove('hidden');
 }
 
 function saveUserData() {
@@ -133,6 +136,7 @@ function updateDashboard() {
     const recentEntries = document.getElementById('recent-entries');
     const healthScore = document.getElementById('health-score');
     
+
     if (healthRecords.length > 0) {
         const latestRecord = healthRecords[healthRecords.length - 1];
         summary.innerHTML = `
@@ -163,6 +167,9 @@ function updateDashboard() {
         recentEntries.innerHTML = '';
         healthScore.innerHTML = '';
     }
+
+    updateLeaderboard();
+    updateAdvancedAnalytics();
 }
 
 function calculateHealthScore(record) {
@@ -449,3 +456,129 @@ restoreDataBtn.addEventListener('click', () => {
     })
     .catch((error) => alert('Error restoring backup: ' + error.message));
 });
+
+// Wearable device syncing
+const syncWearableBtn = document.getElementById('sync-wearable');
+const wearableStatus = document.getElementById('wearable-status');
+
+syncWearableBtn.addEventListener('click', () => {
+    wearableStatus.textContent = 'Syncing...';
+    // Simulating wearable sync
+    setTimeout(() => {
+        const newData = {
+            steps: Math.floor(Math.random() * 5000) + 5000,
+            heartRate: Math.floor(Math.random() * 40) + 60,
+            sleep: Math.floor(Math.random() * 3) + 6
+        };
+        updateHealthData(newData);
+        wearableStatus.textContent = 'Sync completed successfully!';
+    }, 2000);
+});
+
+function updateHealthData(newData) {
+    const latestRecord = healthRecords[healthRecords.length - 1];
+    latestRecord.steps = newData.steps;
+    latestRecord.heartRate = newData.heartRate;
+    latestRecord.sleep = newData.sleep;
+    saveUserData();
+    updateDashboard();
+    updateCharts();
+    updateAnalytics();
+}
+
+// Social features
+const shareAchievementBtn = document.getElementById('share-achievement');
+const friendLeaderboard = document.getElementById('friend-leaderboard');
+
+shareAchievementBtn.addEventListener('click', () => {
+    const latestRecord = healthRecords[healthRecords.length - 1];
+    const achievement = `I walked ${latestRecord.steps} steps today!`;
+    alert(`Achievement shared: ${achievement}`);
+    // In a real app, this would post to a social network or the app's social feature
+});
+
+function updateLeaderboard() {
+    // Simulated leaderboard data
+    const friends = [
+        { name: 'Alice', steps: 12000 },
+        { name: 'Bob', steps: 10000 },
+        { name: 'Charlie', steps: 9000 },
+        { name: 'You', steps: healthRecords[healthRecords.length - 1].steps }
+    ];
+    friends.sort((a, b) => b.steps - a.steps);
+    
+    friendLeaderboard.innerHTML = '<h3>Friend Leaderboard</h3>';
+    friends.forEach((friend, index) => {
+        friendLeaderboard.innerHTML += `<p>${index + 1}. ${friend.name}: ${friend.steps} steps</p>`;
+    });
+}
+
+// Advanced Health Analytics
+function updateAdvancedAnalytics() {
+    const healthScoreBreakdown = document.getElementById('health-score-breakdown');
+    const longTermTrends = document.getElementById('long-term-trends');
+    const personalizedRecommendations = document.getElementById('personalized-recommendations');
+
+    // Health Score Breakdown
+    const latestRecord = healthRecords[healthRecords.length - 1];
+    const score = calculateHealthScore(latestRecord);
+    healthScoreBreakdown.innerHTML = `
+        <h3>Health Score Breakdown</h3>
+        <p>Overall Score: ${score}/100</p>
+        <p>Weight: ${score * 0.2}/20</p>
+        <p>Steps: ${score * 0.2}/20</p>
+        <p>Water Intake: ${score * 0.2}/20</p>
+        <p>Sleep: ${score * 0.2}/20</p>
+        <p>Mood: ${score * 0.1}/10</p>
+        <p>Stress: ${score * 0.1}/10</p>
+    `;
+
+    // Long-term Trends
+    longTermTrends.innerHTML = '<h3>Long-term Trends</h3>';
+    const weightTrend = calculateTrend(healthRecords.map(r => r.weight));
+    const stepsTrend = calculateTrend(healthRecords.map(r => r.steps));
+    longTermTrends.innerHTML += `
+        <p>Weight Trend: ${weightTrend > 0 ? 'Increasing' : 'Decreasing'}</p>
+        <p>Steps Trend: ${stepsTrend > 0 ? 'Increasing' : 'Decreasing'}</p>
+    `;
+
+    // Personalized Recommendations
+    personalizedRecommendations.innerHTML = '<h3>Personalized Recommendations</h3>';
+    if (latestRecord.steps < 10000) {
+        personalizedRecommendations.innerHTML += `
+            <div class="recommendation">
+                <p>Try to increase your daily steps. Aim for at least 10,000 steps per day.</p>
+            </div>
+        `;
+    }
+    if (latestRecord.sleep < 7) {
+        personalizedRecommendations.innerHTML += `
+            <div class="recommendation">
+                <p>You're not getting enough sleep. Aim for 7-9 hours of sleep per night.</p>
+            </div>
+        `;
+    }
+    if (latestRecord.water < 2000) {
+        personalizedRecommendations.innerHTML += `
+            <div class="recommendation">
+                <p>Increase your water intake. Aim for at least 2 liters per day.</p>
+            </div>
+        `;
+    }
+}
+
+function calculateTrend(data) {
+    const n = data.length;
+    let sum_x = 0, sum_y = 0, sum_xy = 0, sum_xx = 0;
+    for (let i = 0; i < n; i++) {
+        sum_x += i;
+        sum_y += data[i];
+        sum_xy += i * data[i];
+        sum_xx += i * i;
+    }
+    const slope = (n * sum_xy - sum_x * sum_y) / (n * sum_xx - sum_x * sum_x);
+    return slope;
+}
+
+
+
